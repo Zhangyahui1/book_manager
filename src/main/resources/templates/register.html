@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>注册</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">书</h1>
+
+            </div>
+            <h3>欢迎注册 图书管理系统</h3>
+            <p>创建一个新账户</p>
+            <form id="register-form" method="post" th:action="@{/register}" class="m-t" role="form">
+                <div class="form-group">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="请输入用户名" required="">
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="请输入邮箱" required="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="phone" id="phone" class="form-control" placeholder="请输入电话" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password2" id="password2" class="form-control" placeholder="请再次输入密码" required="">
+                </div>
+                <button id="submit-btn" class="btn btn-primary block full-width m-b" type="submit">注 册</button>
+
+            </form>
+
+
+            <p class="text-muted text-center"><small>已经有账户了？</small><a th:href="@{/login}">点此登录</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+    <script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+    <!-- iCheck -->
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+
+    <script th:src="@{/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/js/messages_zh.min.js}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+
+
+        $.validator.addMethod('isEqPassword', function (value, element) {
+            let password = $("#password").val();
+            return password==value;
+        }, '两次密码不一致');
+
+        $.validator.addMethod('phoneTest', function (value, element) {
+            let expression =  /^1[3456789]\d{9}$/;
+            return this.optional(element) || (expression.test(value));
+        }, '电话格式不正确');
+
+        $('#register-form').validate({
+            rules : {
+                username : {
+                    required : true,
+                    minlength:6,
+                    maxlength:32,
+                    remote:{
+                        url:'/testName',
+                        type:'get',
+                        data:{
+                            username:function () {
+                                return $("#username").val();
+                            }
+                        }
+                    }
+                },
+                email:{
+                    required :true,
+                    minlength : 6,
+                    maxlength :32,
+                    email:true
+                },
+                phone:{
+                    required:true,
+                    phoneTest:true
+                },
+                password:{
+                    required:true,
+                },
+                password2:{
+                    required:true,
+                    isEqPassword:true
+                }
+            },
+            messages : {
+                username:{
+                    remote:'用户名已被占用'
+                }
+            }
+        });
+
+
+    </script>
+
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <!--统计代码，可删除-->
+
+</body>
+
+</html>

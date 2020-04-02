@@ -1,0 +1,32 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+
+## 修改Thymeleaf缓存为false
+spring:
+  thymeleaf:
+    cache: false
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/book?serverTimezone=GMT
+    username: root
+    password: root
+    hikari:
+      maximum-pool-size: 20
+#  mvc:
+#    static-path-pattern:
+
+# 整合MyBatis
+mybatis:
+  type-aliases-package: com.qlu.bean
+  mapper-locations: classpath:/mappers/*.xml
+
+## PageHelper
+#pagehelper:
+#  reasonable: true
+
+logging:
+  level:
+    com.qlu.mapper: debug

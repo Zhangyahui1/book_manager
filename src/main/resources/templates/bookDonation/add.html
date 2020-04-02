@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>图书馆</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg top-navigation">
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <!--头部-->
+        <div th:replace="_fragments :: head" class="row border-bottom white-bg">
+        </div>
+
+        <!--内容开始-->
+        <div class="wrapper wrapper-content">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>请输入你要捐赠书籍的信息... </h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form method="post" th:action="@{/bookDonation/add}" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">书籍名称</label>
+                                    <input type="hidden" id="uid" name="uid" th:value="${session.user.id}">
+                                    <div class="col-sm-10">
+                                        <input type="text" name="bookName" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">作者</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="author" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">类型</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="type" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">简介</label>
+
+                                    <div class="col-sm-10">
+                                        <textarea type="text" name="info" required class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">出版日期</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="date" name="publishDate" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+                                        <label class="laydate-icon"></label>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-primary" type="submit">保存内容</button>
+                                        <button class="btn btn-white" type="reset">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--脚部-->
+        <div class="footer">
+            <div class="pull-right">
+                By：<a href="http://www.baidu.com" target="_blank">百度一下，你就知道</a>
+            </div>
+            <div>
+                <strong>Copyright</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+<!-- Flot -->
+<script th:src="@{/js/plugins/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.tooltip.min.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.resize.js}"></script>
+<!-- ChartJS-->
+<script th:src="@{/js/plugins/chartJs/Chart.min.js}"></script>
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+<!-- Peity demo -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+<!--bootStrap的搜索包-->
+<script th:src="@{/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}" ></script>
+<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}" ></script>
+
+<script>
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>图书馆</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg top-navigation">
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <!--头部-->
+        <div th:replace="_fragments :: head" class="row border-bottom white-bg">
+        </div>
+
+        <!--内容开始-->
+        <div class="wrapper wrapper-content">
+
+            <div class="row">
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img th:src="${bookInfo.picture}" alt="">
+                        </div>
+                        <div class="col-md-6 pull-right">
+                            <input type="hidden" th:value="${bookInfo.id}" id="bid">
+                            <input type="hidden" th:value="${session.user.username}==null?'':${session.user.username}" id="username">
+                            <input type="hidden" th:value="${session.user.id}==null?'':${session.user.id}" id="uid">
+                            <h1 th:text="${bookInfo.bookName}"></h1>
+                            <div class="alert alert-success">
+                                作者 : <span th:text="${bookInfo.author}"></span>
+                            </div>
+                            <div class="alert alert-success">
+                                描述 : <span th:text="${bookInfo.info}"></span>
+                            </div>
+                            <div class="alert alert-success">
+                                位置 : <span th:text="|${stackRoom.name}, ${stackRoom.location}|"></span>
+                            </div>
+                            <p>
+                            <div class="alert alert-success">
+                                出版日期: <span th:text="${#dates.format(bookInfo.publishDate, 'yyyy-MM-dd')}"></span>
+                            </div>
+                            </p>
+                            <p>
+                                <button th:if="${bookInfo.isBorrow} eq '2'" disabled role="button" class="btn btn-primary btn-lg">已经借出</button>
+                                <button th:if="${bookInfo.isBorrow} eq '1'" disabled role="button" class="btn btn-primary btn-lg">已被预约</button>
+                                <button th:if="${bookInfo.isBorrow} eq '0'" role="button" id="borrowBtn" class="btn btn-primary btn-lg">预约</button>
+                            </p>
+                            <p  >
+                                <div th:if="${bookInfo.isBorrow} gt '0'" class="alert alert-success">
+                                    预计 <span th:if="${bookInfo.isBorrow} gt '0'" th:text="${#dates.format(borrowInfo.returnTime,'yyyy-MM-dd')}"></span> 归还
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>评论</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content ibox-heading">
+                            <div id="whoCanDiscuss">
+                                <div class="input-group">
+                                    <input type="text" id="info" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button id="submitDiscuss" type="button" class="btn btn-primary">提交评论</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="feed-activity-list" id="showDiscuss">
+
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right text-navy">1月前</small>
+                                        <strong>井幽幽</strong>
+                                        <div>有人说：“一辈子很长，要跟一个有趣的人在一起”。我想关注我的人，应该是那种喜欢找乐子也乐意分享乐趣的人，你们一定挺优秀的。所以单身的应该在这条留言，互相勾搭一下。特别有钱人又帅可以直接私信我！</div>
+                                        <small class="text-muted">4月11日 00:00</small>
+                                    </div>
+                                </div>
+
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right">2月前</small>
+                                        <strong>马伯庸 </strong>
+                                        <div>又方便，又防水，手感又好，还可以用手机遥控。简直是拍戏利器，由其是跟老师们搭戏的时候…想想还有点小激动啊，嘿嘿。</div>
+                                        <small class="text-muted">11月8日 20:08 </small>
+                                    </div>
+                                </div>
+
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right">5月前</small>
+                                        <strong>芒果宓 </strong>
+                                        <div>一个完整的梦。</div>
+                                        <small class="text-muted">11月8日 20:08 </small>
+                                    </div>
+                                </div>
+
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right">5月前</small>
+                                        <strong>刺猬尼克索</strong>
+                                        <div>哈哈哈哈 你卖什么萌啊! 蠢死了</div>
+                                        <small class="text-muted">11月8日 20:08 </small>
+                                    </div>
+                                </div>
+
+
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right">5月前</small>
+                                        <strong>老刀99</strong>
+                                        <div>昨天评论里你见过最“温暖和感人”的诗句，整理其中经典100首，值得你收下学习。</div>
+                                        <small class="text-muted">11月8日 20:08 </small>
+                                    </div>
+                                </div>
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right">5月前</small>
+                                        <strong>娱乐小主 </strong>
+                                        <div>你是否想过记录自己的梦？你是否想过有自己的一个记梦本？小时候写日记，没得写了就写昨晚的梦，后来变成了习惯………翻了一晚上自己做过的梦，想哭，想笑…</div>
+                                        <small class="text-muted">11月8日 20:08 </small>
+                                    </div>
+                                </div>
+                                <div class="feed-element">
+                                    <div>
+                                        <small class="pull-right">5月前</small>
+                                        <strong>DMG电影 </strong>
+                                        <div>《和外国男票乘地铁，被中国大妈骂不要脸》妹子实在委屈到不行，中国妹子找外国男友很令人不能接受吗？大家都来说说自己的看法</div>
+                                        <small class="text-muted">11月8日 20:08 </small>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        <!--脚部-->
+        <div class="footer">
+            <div class="pull-right">
+                By：<a href="http://www.baidu.com" target="_blank">百度一下，你就知道</a>
+            </div>
+            <div>
+                <strong>Copyright</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+<!-- Flot -->
+<script th:src="@{/js/plugins/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.tooltip.min.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.resize.js}"></script>
+<!-- ChartJS-->
+<script th:src="@{/js/plugins/chartJs/Chart.min.js}"></script>
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+<!-- Peity demo -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+<!--bootStrap的搜索包-->
+<script th:src="@{/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+
+<script>
+
+    $(function () {
+        whoCanDiscuss()
+    })
+
+
+    function whoCanDiscuss(){
+        $.ajax({
+            url:"/discuss/whoCanDiscuss",
+            type:"post",
+            data:{
+                uid:$("#uid").val(),
+                bid:$("#bid").val(),
+            },
+            dataType:"text",
+            success:function (msg) {
+                if (msg=='success'){
+                    //可以评论
+                }else {
+                    //不可以评论
+                    $("#whoCanDiscuss").html('<div class="input-group">借过书后才能评论哦~~~</div>');
+                }
+            }
+        });
+    }
+
+    $("#submitDiscuss").on('click',function () {
+        $.ajax({
+            url:"/discuss/add",
+            type:"post",
+            data:{
+                info:$("#info").val(),
+                bid:$("#bid").val(),
+                username:$("#username").val()
+            },
+            dataType:"text",
+            success:function (msg) {
+                $("#info").val("");
+                if (msg=='success'){
+                    //刷新评论区;
+                    getDiscuss();
+                };
+            }
+        })
+    });
+
+    //预约
+    $("#borrowBtn").on('click',function () {
+        $.ajax({
+            url:"/book/order",
+            type:"post",
+            data:{
+                bid:$("#bid").val(),
+                uid:$("#uid").val()
+            },
+            dataType:"text",
+            success:function (msg) {
+                if (msg=='success'){
+                    //成功
+                    window.location.href="/book/info?id="+$("#bid").val();
+                }else {
+                    alert("您的预约书籍过多！请仔细对待每一本书哦！");
+                }
+            }
+        });
+
+    });
+
+    $(function () {
+        getDiscuss();
+    });
+
+    function getDiscuss(){
+        $.ajax({
+            url:"/discuss/get",
+            type:"get",
+            data:{
+                bid:$("#bid").val()
+            },
+            dataType:"json",
+            success:function (msg) {
+                let res = "";
+                if (msg.length==0){
+                    res+='<div class="feed-element">\n' +
+                        '                                    <div>\n' +
+                        '                                        <small class="pull-right text-navy"></small>\n' +
+                        '                                        <strong></strong>\n' +
+                        '                                        <div>本书暂时还没有评论,留下你的看法吧...</div>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>';
+                }
+                console.log(res);
+                for (let data of msg){
+                    let time = data.createTime;
+                    res+='<div class="feed-element">\n' +
+                        '                                    <div>\n' +
+                        '                                        <small class="pull-right text-navy">'+time.substr(0,19)+'</small>\n' +
+                        '                                        <strong>'+data.username+'</strong>\n' +
+                        '                                        <div>'+data.info+'</div>\n' +
+                        '                                    </div>\n' +
+                        '                                </div>';
+                }
+                $("#showDiscuss").html(res);
+            }
+        })
+    };
+
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>

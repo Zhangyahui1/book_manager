@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>图书馆</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg top-navigation">
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <input type="hidden" id="uid" th:value="${session.user.id}">
+
+        <!--内容开始-->
+        <div class="wrapper wrapper-content">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>借阅信息</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <table id="orderListTable" class="table table-bordered table-hover">
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+<!-- Flot -->
+<script th:src="@{/js/plugins/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.tooltip.min.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.resize.js}"></script>
+<!-- ChartJS-->
+<script th:src="@{/js/plugins/chartJs/Chart.min.js}"></script>
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+<!-- Peity demo -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+<!--bootStrap的搜索包-->
+<script th:src="@{/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}" ></script>
+<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}" ></script>
+
+<script>
+    $(function () {
+        queryBorrowList();
+    });
+
+    let orderListTable;
+
+    function queryBorrowList() {
+        orderListTable = $("#orderListTable").bootstrapTable({
+            url:'/admin/borrow/showBorrowList',
+            sidePagination: 'server',
+            pagination: true,
+            pageNumber: 1,
+            pageSize: 5,
+            pageList: [5, 10, 15],
+            queryParamsType: "undefined",
+            paginationPreText: '上一页',
+            paginationNextText: '下一页',
+            queryParams: function(params) {
+                let newParam = {
+                    pageNum: params.pageNumber,
+                    pageSize: params.pageSize,
+                }
+                return newParam;
+            },
+            columns: [
+                { field: 'SerialNumber', title: '序号',
+                    formatter: function (value, row, index) {
+                        return index+1;
+                    }
+                },
+                { field: "bookName", title: "书籍名" },
+                { field:"borrowTime", title: "初始借阅时间",
+                    formatter:function (value,row,index) {
+                        return value.substr(0,10);
+                    }
+                },
+                { field:"returnTime", title: "应归还时间",
+                    formatter:function (value,row,index) {
+                        return value.substr(0,10);
+                    }
+                },
+                { field: "username", title: "用户名" },
+                { field: "email", title: "用户邮箱" },
+                { field: "phone", title: "联系电话" },
+
+                { title: "操作",
+                    formatter: function (value, row, index) {
+                        let bookInfo = "<button type='button' class='btn btn-primary' id='bookInfo' >书籍详情</button>";
+                        let borrow = "<button type='button' class='btn btn-success' id='borrow'>还书</button>";
+                        return bookInfo + " | " + borrow;
+                    },
+                    events: userEvents
+                }]
+        });
+    }
+    window.userEvents = {
+        'click #borrow': function(event, value, row, index) {
+            let action = '/admin/borrow/returnBook';
+            if(confirm('请确定此书已归还')) {
+                $.ajax({
+                    url: action,
+                    type:"post",
+                    dataType:"text",
+                    data:{
+                        id:row.id,
+                        bid:row.bid
+                    },
+                    success:function (msg) {
+                        console.log(msg);
+                        alert("还书成功！");
+                        $("#orderListTable").bootstrapTable('refresh');
+                    }
+                });
+            }
+        },
+
+        'click #bookInfo': function(event, value, row, index) {
+            let bid = row.bid;
+            let action = '/book/info?id=' + bid;
+            window.open(action);
+        }
+    }
+
+
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>

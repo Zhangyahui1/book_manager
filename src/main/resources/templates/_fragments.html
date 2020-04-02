@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>图书馆</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg top-navigation">
+
+<div id="wrapper">
+    <div  id="page-wrapper" class="gray-bg">
+        <!--头部-->
+        <div th:fragment="head" class="row border-bottom white-bg">
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-header">
+                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                        <i class="fa fa-reorder"></i>
+                    </button>
+                    <a href="#" class="navbar-brand">欢迎来到图书馆</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a aria-expanded="false" role="button" th:href="@{/index}"> 返回首页</a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a th:href="@{/bookDonation/add}">我要捐书</a>
+                                </li>
+                                <li><a th:href="@{/bookDonation/list}">我的捐赠</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 借阅信息 <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a th:href="@{/borrow/borrowList}">我的预约/借阅</a>
+                                </li>
+                                <li><a th:href="@{/borrow/historyList}">我的借阅历史</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 个人信息 <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                </li>
+                                <li><a th:href="@{/user/editUserInfo}">修改个人信息</a>
+                                </li>
+                                <li><a th:href="@{/user/editPassword}">修改密码</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> <span th:text="${session.user!=null?session.user.username:'未登录'}"></span> <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a th:href="@{/logout}"><i class="fa fa-sign-out"></i> 退出</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!--内容开始-->
+        <div class="wrapper wrapper-content">
+
+        </div>
+
+        <!--脚部-->
+        <div class="footer">
+            <div class="pull-right">
+                By：<a href="http://www.baidu.com" target="_blank">百度一下，你就知道</a>
+            </div>
+            <div>
+                <strong>Copyright</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+<!-- Flot -->
+<script th:src="@{/js/plugins/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.tooltip.min.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.resize.js}"></script>
+<!-- ChartJS-->
+<script th:src="@{/js/plugins/chartJs/Chart.min.js}"></script>
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+<!-- Peity demo -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+<!--bootStrap的搜索包-->
+<script th:src="@{/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+
+<script>
+
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>

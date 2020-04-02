@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - 基础表格</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" th:href="@{favicon.ico}">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>图书列表</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="/admin/book/exportBookInfo">导出书籍信息</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3 m-b-xs">
+                            <div class="input-group">
+                                <input type="text" id="bookName" name="bookName" placeholder="书名" class="input-sm form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4 m-b-xs">
+                            <div class="input-group">
+                                <input type="text" id="author" name="author" placeholder="作者" class="input-sm form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="text" id="type" name="type" placeholder="类型" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button type="button" id="search-btn" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                        <div th:fragment="bookList" id="table-container" class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>书名</th>
+                                    <th>作者</th>
+                                    <th>出版日期</th>
+                                    <th>类型</th>
+                                    <th>借阅次数</th>
+                                    <th>封面</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="book,iter : ${page.records}">
+                                    <td th:text="${iter.count}"></td>
+                                    <td th:text="${book.bookName}"></td>
+                                    <td th:text="${book.author}"></td>
+                                    <td th:text="${#dates.format(book.publishDate,'yyyy-MM-dd')}"></td>
+                                    <td th:text="${book.type}"></td>
+                                    <td th:text="${book.borrowTimes}"></td>
+                                    <td><img width="30px" th:src="${book.picture}"></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">操作 <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a th:href="@{/admin/book/editPicture/{id}(id=${book.id})}">修改封面</a>
+                                                </li>
+                                                <li><a th:href="@{/admin/book/edit/{id}(id=${book.id})}">编辑信息</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li><a th:href="@{/admin/book/delete/{id}(id=${book.id})}">删除</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <span th:text="|共${page.total}条数据,共${page.total/page.size+1}页,当前是第${page.current}页|"></span>
+                                </div>
+                                <div class="btn-group col-lg-5 pull-right inline">
+                                    <a th:href="@{/admin/book/list?pageNumber={pageNumber}(pageNumber=${page.current-1})}" th:disabled="${page.current}==1" class="btn btn-white"><i class="fa fa-chevron-left"></i>
+                                    </a>
+                                    <a th:href="@{/admin/book/list?pageNumber={pageNumber}(pageNumber=${page.current+1})}" th:disabled="${page.current}==${page.total/page.size+1}" class="btn btn-white"><i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+
+
+
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+
+
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+
+<!-- Peity -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+
+    $(function () {
+        $("#search-btn").click(function () {
+            loadData();
+        });
+    });
+
+    function loadData() {
+        $("#table-container").load(/*[[@{/admin/book/search}]]*/"/admin/book/search",{
+            bookName : $("#bookName").val(),
+            author : $("#author").val(),
+            type : $("#type").val()
+        });
+    }
+
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>

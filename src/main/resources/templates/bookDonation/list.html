@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>图书馆</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg top-navigation">
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <!--头部-->
+        <div th:replace="_fragments :: head" class="row border-bottom white-bg">
+        </div>
+
+        <!--内容开始-->
+        <div class="wrapper wrapper-content">
+
+            <div class="row">
+                <input type="hidden" id="uid" th:value="${session.user.id}">
+                <table id="donationListTable" class="table table-bordered table-hover">
+                </table>
+            </div>
+            
+        </div>
+
+        <!--脚部-->
+        <div class="footer">
+            <div class="pull-right">
+                By：<a href="http://www.baidu.com" target="_blank">百度一下，你就知道</a>
+            </div>
+            <div>
+                <strong>Copyright</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}"></script>
+<!-- Flot -->
+<script th:src="@{/js/plugins/flot/jquery.flot.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.tooltip.min.js}"></script>
+<script th:src="@{/js/plugins/flot/jquery.flot.resize.js}"></script>
+<!-- ChartJS-->
+<script th:src="@{/js/plugins/chartJs/Chart.min.js}"></script>
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+<!-- Peity demo -->
+<script th:src="@{/js/demo/peity-demo.js}"></script>
+<!--bootStrap的搜索包-->
+<script th:src="@{/js/plugins/suggest/bootstrap-suggest.min.js}"></script>
+
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}" ></script>
+<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}" ></script>
+
+<script>
+    $(function () {
+        queryList();
+    });
+
+    let donationListTable;
+
+    function queryList() {
+        donationListTable = $("#donationListTable").bootstrapTable({
+            url:'/bookDonation/showBookDonationList',
+            sidePagination: 'server',
+            pagination: true,
+            pageNumber: 1,
+            pageSize: 5,
+            pageList: [5, 10, 15],
+            queryParamsType: "undefined",
+            paginationPreText: '上一页',
+            paginationNextText: '下一页',
+            queryParams: function(params) {
+                let uid = $("#uid").val();
+                let newParam = {
+                    pageNum: params.pageNumber,
+                    pageSize: params.pageSize,
+                    uid:uid
+                }
+                return newParam;
+            },
+            columns: [
+                { field: 'SerialNumber', title: '序号',
+                    formatter: function (value, row, index) {
+                        return index+1;
+                    }
+                },
+                { field: "bookName", title: "书籍名" },
+                { field: "author", title: "作者" },
+                { field:"publishDate", title: "出版日期",
+                    formatter:function (value,row,index) {
+                        return value.substr(0,10);
+                    }
+                },
+                { field: "info", title: "简介" },
+                { field: "type", title: "类型" },
+                { field:"status", title: "状态",
+                    formatter:function (value,row,index) {
+                        return value==0?'已申请':'已上架';
+                    }
+                }]
+        });
+    }
+</script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<!--统计代码，可删除-->
+
+</body>
+
+</html>
