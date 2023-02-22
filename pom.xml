@@ -68,7 +68,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.3</version>
+            <version>1.5</version>
         </dependency>
 
         <!-- 针对java.lang包下的类提供的一组工具类 -->
